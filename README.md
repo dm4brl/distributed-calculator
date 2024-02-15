@@ -24,4 +24,5 @@ git clone https://github.com/dm4brl/distributed-calculator
 2)Build the project:
 
 cd distributed-calculator
+
 go build
