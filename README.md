@@ -26,14 +26,17 @@ git clone https://github.com/dm4brl/distributed-calculator
 cd distributed-calculator
 
 3)Create a .env file in the root directory of the project and add the following environment variables:
-makefile
-
 
 POSTGRES_USER=<your-postgres-user>
+
 POSTGRES_PASSWORD=<your-postgres-password>
+
 POSTGRES_DB=<your-postgres-db>
+
 REDIS_PASSWORD=<your-redis-password>
+
 RABBITMQ_USER=<your-rabbitmq-user>
+
 RABBITMQ_PASSWORD=<your-rabbitmq-password>
 
 go build
