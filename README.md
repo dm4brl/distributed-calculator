@@ -17,5 +17,11 @@ Redis
 RabbitMQ
 Once you have these dependencies installed, you can follow these steps to run the project:
 
-Clone the project repository:
+1)Clone the project repository:
+
 git clone https://github.com/dm4brl/distributed-calculator
+
+2)Build the project:
+
+cd distributed-calculator
+go build
