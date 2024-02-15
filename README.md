@@ -18,3 +18,4 @@ RabbitMQ
 Once you have these dependencies installed, you can follow these steps to run the project:
 
 Clone the project repository:
+git clone https://github.com/dm4brl/distributed-calculator
