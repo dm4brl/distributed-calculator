@@ -27,16 +27,26 @@ cd distributed-calculator
 
 3)Create a .env file in the root directory of the project and add the following environment variables (The ".env" file should be added to the root directory of the project, next to the "main.go" file):
 
-POSTGRES_USER=<your-postgres-user>
+POSTGRES_HOST=<postgres-host>
 
-POSTGRES_PASSWORD=<your-postgres-password>
+POSTGRES_PORT=<postgres-port>
 
-POSTGRES_DB=<your-postgres-db>
+POSTGRES_USER=<postgres-user>
 
-REDIS_PASSWORD=<your-redis-password>
+POSTGRES_PASSWORD=<postgres-password>
 
-RABBITMQ_USER=<your-rabbitmq-user>
+POSTGRES_DB=<postgres-db>
 
-RABBITMQ_PASSWORD=<your-rabbitmq-password>
+REDIS_HOST=<redis-host>
+
+REDIS_PORT=<redis-port>
+
+RABBITMQ_HOST=<rabbitmq-host>
+
+RABBITMQ_PORT=<rabbitmq-port>
 
 go build
+
+4)Run the project:
+
+./distributed-calculator
