@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: distributed-calculator
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: distributed-calculator
+  template:
+    metadata:
+      labels:
+        app: distributed-calculator
+    spec:
+      containers:
+      - name: server
+        image: registry.gitlab.com/dm4brl/distributed-calculator:latest
+        ports:
+        - containerPort: 8080
+      - name: agent
+        image: registry.gitlab.com/dm4brl/distributed-calculator:latest
+        ports:
+        - containerPort: 8081
