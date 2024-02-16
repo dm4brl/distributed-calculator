@@ -2,66 +2,40 @@ package storage
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
-	"github.com/dm4brl/distributed-calculator/pkg/config"
 	"github.com/go-redis/redis/v8"
 )
 
-type Redis struct {
+type RedisStorage struct {
 	client *redis.Client
 }
 
-func NewRedis(cfg *config.Config) (*Redis, error) {
-	client := redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%d", cfg.Database.Host, cfg.Database.Port),
-		Password: cfg.Database.Password,
-		DB:       cfg.Database.Name,
-	})
-
-	_, err := client.Ping(client.Context()).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return &Redis{client: client}, nil
+func NewRedisStorage(client *redis.Client) *RedisStorage {
+	return &RedisStorage{client: client}
 }
 
-func (r *Redis) SaveTask(task *task.Task) error {
-	err := r.client.HSet(context.Background(), "tasks", task.ID, task.Result).Err()
+func (s *RedisStorage) Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
+	err := s.client.Set(ctx, key, value, expiration).Err()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to set key in redis: %w", err)
 	}
 	return nil
 }
 
-func (r *Redis) GetTask(id string) (*task.Task, error) {
-	result, err := r.client.HGet(context.Background(), "tasks", id).Result()
+func (s *RedisStorage) Get(ctx context.Context, key string) (string, error) {
+	value, err := s.client.Get(ctx, key).Result()
 	if err != nil {
-		return nil, err
+		return "", fmt.Errorf("failed to get key from redis: %w", err)
 	}
-
-	resultFloat, err := strconv.ParseFloat(result, 64)
-	if err != nil {
-		return nil, err
-	}
-
-	return &task.Task{ID: id, Result: resultFloat}, nil
+	return value, nil
 }
 
-func (r *Redis) GetTasks() ([]*task.Task, error) {
-	tasks := make(map[string]string)
-	err := r.client.HGetAll(context.Background(), "tasks").Scan(&tasks)
+func (s *RedisStorage) Delete(ctx context.Context, key string) error {
+	err := s.client.Del(ctx, key).Err()
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("failed to delete key from redis: %w", err)
 	}
-
-	var resultTasks []*task.Task
-	for id, result := range tasks {
-		resultFloat, err := strconv.ParseFloat(result, 64)
-		if err != nil {
-			return nil, err
-		}
-		resultTasks =
+	return nil
+}
