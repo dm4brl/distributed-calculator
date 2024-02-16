@@ -29,4 +29,4 @@ go build -o agent ./cmd/agent/main.go
 
 ./agent
 
-
+kubectl apply -f server-agent-deployment.yaml
