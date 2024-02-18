@@ -11,42 +11,11 @@ The orchestrator is responsible for accepting arithmetic expressions from client
 The agent is responsible for consuming tasks from the RabbitMQ queue and processing them. The agent uses the math/big package to perform the arithmetic calculations and stores the result of the calculation in the PostgreSQL database.
 To run the distributed calculator project, you will need to have the following prerequisites installed:
 
-Go (version 1.15 or higher)
-PostgreSQL
-Redis
-RabbitMQ
-Once you have these dependencies installed, you can follow these steps to run the project:
+Running the application
 
-1)Clone the project repository:
+To run the application, you need to have Go installed on your machine.
 
-git clone https://github.com/dm4brl/distributed-calculator
+1. Clone the repository:
 
-2)Build the project:
-
-cd distributed-calculator
-
-3)Create a .env file in the root directory of the project and add the following environment variables (The ".env" file should be added to the root directory of the project, next to the "main.go" file):
-
-POSTGRES_HOST=<postgres-host>
-
-POSTGRES_PORT=<postgres-port>
-
-POSTGRES_USER=<postgres-user>
-
-POSTGRES_PASSWORD=<postgres-password>
-
-POSTGRES_DB=<postgres-db>
-
-REDIS_HOST=<redis-host>
-
-REDIS_PORT=<redis-port>
-
-RABBITMQ_HOST=<rabbitmq-host>
-
-RABBITMQ_PORT=<rabbitmq-port>
-
-go build
-
-4)Run the project:
-
-./distributed-calculator
+```bash
+git clone https://github.com/dm4brl/distributed-calculator.git
