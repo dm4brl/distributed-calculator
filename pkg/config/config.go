@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"errors"
+	"encoding/json"
 
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
@@ -91,4 +92,28 @@ func NewConfig(address string) (*Config, error) {
 			Address: address,
 		},
 	}, nil
+}
+
+
+type Config struct {
+	Server struct {
+		Address string `json:"address"`
+	} `json:"server"`
+}
+
+func NewConfig(configFile string) (*Config, error) {
+	file, err := os.Open(configFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open config file: %v", err)
+	}
+	defer file.Close()
+
+	decoder := json.NewDecoder(file)
+	cfg := &Config{}
+	err = decoder.Decode(cfg)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode config file: %v", err)
+	}
+
+	return cfg, nil
 }
