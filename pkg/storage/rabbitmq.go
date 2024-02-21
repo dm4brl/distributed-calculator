@@ -1,10 +1,11 @@
-package storage
+package rabbitmq
 
 import (
 	"errors"
 	"fmt"
+	"strconv"
 
-	"github.com/dm4brl/distributed-calculator/pkg/config"
+	"github.com/yourusername/yourproject/config"
 	"github.com/streadway/amqp"
 )
 
