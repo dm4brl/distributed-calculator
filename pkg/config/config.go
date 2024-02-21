@@ -36,3 +36,31 @@ func LoadConfig() (*Config, error) {
 
 	return &cfg, nil
 }
+
+type Config struct {
+	ServerAddress string
+	AgentAddress  string
+}
+
+func NewConfig() *Config {
+	return &Config{
+		ServerAddress: ":8080",
+		AgentAddress:  ":8081",
+	}
+}
+
+func (c *Config) Validate() error {
+	if c.ServerAddress == "" {
+		return fmt.Errorf("ServerAddress is required")
+	}
+	if c.AgentAddress == "" {
+		return fmt.Errorf("AgentAddress is required")
+	}
+	return nil
+}
+
+func (c *Config) LoadFromEnv() {
+	c.ServerAddress = os.Getenv("SERVER_ADDRESS")
+	c.AgentAddress = os.Getenv("AGENT_ADDRESS")
+}
+
