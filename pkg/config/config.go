@@ -3,8 +3,10 @@ package config
 import (
 	"fmt"
 	"os"
+	"errors"
 
 	"github.com/spf13/viper"
+	"github.com/streadway/amqp"
 )
 
 type Config struct {
@@ -64,3 +66,29 @@ func (c *Config) LoadFromEnv() {
 	c.AgentAddress = os.Getenv("AGENT_ADDRESS")
 }
 
+
+
+import (
+	"errors"
+	"fmt"
+
+	"github.com/streadway/amqp"
+)
+
+type Config struct {
+	Server struct {
+		Address string
+	}
+}
+
+func NewConfig(address string) (*Config, error) {
+	if address == "" {
+		return nil, errors.New("address is required")
+	}
+
+	return &Config{
+		Server: struct{ Address string }{
+			Address: address,
+		},
+	}, nil
+}
