@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/dm4brl/distributed-calculator/pkg/config"
-	"github.com/dm4brl/distributed-calculator/pkg/storage"
+	"github.com/dm4brl/distributed-calculator/pkg/task"
 )
 
 func main() {
@@ -14,11 +14,10 @@ func main() {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 
-	storage, err := storage.NewStorage(cfg)
-	if err != nil {
-		log.Fatalf("Failed to create storage: %v", err)
-	}
+	taskManager := task.NewTaskManager(cfg)
 
-	fmt.Println("Agent is running")
-	// Do some work here
+	http.HandleFunc("/task", taskManager.HandleTask)
+
+	log.Printf("Starting server on %s", cfg.Server.Address)
+	log.Fatal(http.ListenAndServe(cfg.Server.Address, nil))
 }
