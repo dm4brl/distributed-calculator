@@ -5,18 +5,22 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dm4brl/distributed-calculator/api/v1"
 	"github.com/dm4brl/distributed-calculator/pkg/config"
+	"github.com/dm4brl/distributed-calculator/pkg/storage"
+	"github.com/dm4brl/distributed-calculator/pkg/task"
 )
 
 func main() {
-	cfg, err := config.LoadConfig()
-	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
-	}
+	cfg := config.LoadConfig()
+	storage := storage.NewPostgresStorage(cfg.DatabaseURL)
+	taskManager := task.NewTaskManager(storage)
 
-	router := v1.NewRouter(cfg)
+	http.HandleFunc("/calculate", func(w http.ResponseWriter, r *http.Request) {
+		// Обработка запроса на вычисление
+		taskManager.HandleTask(w, r)
+	})
 
-	log.Printf("Starting server on %s", cfg.Server.Address)
-	log.Fatal(http.ListenAndServe(cfg.Server.Address, router))
+	port := fmt.Sprintf(":%d", cfg.Port)
+	log.Printf("Starting server on port %d", cfg.Port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
